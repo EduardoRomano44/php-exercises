@@ -6,6 +6,8 @@
         <title>PHP - Hello, World!</title>
 </head>
 <body>
-    <h1><?php echo 'Hello, World!'; ?></h1>
+    <h1><?= $title ?></h1>
+    <h2><?= SUBTITLE ?></h2>
+    <p><?= PARAGRAPH ?></p>
 </body>
 </html>
