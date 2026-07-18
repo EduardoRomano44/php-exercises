@@ -1,5 +1,5 @@
 # php-exercises
-Exercises to learn PHP, using XAMPP, adapted from [PHP Tutorial website](https://www.phptutorial.net/).
+Exercises to learn PHP, using XAMPP, adapted from [PHP Tutorial website](https://www.phptutorial.net/) and this [Youtube Playlist](https://www.youtube.com/playlist?list=PLIMzSnt1bwYRVIi7FTW6KMou8Pr4o25Xe).
 
 ## Author
 - Eduardo Romano
