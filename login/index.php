@@ -2,7 +2,10 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-
+if (isset(($_SESSION["user"]))){
+    header("Location: dashboard.php");
+    exit;
+}
 $requestedForm = $_GET['form'] ?? null;
 if (isset($_GET['clear_messages'])) {
     unset($_SESSION['errors'], $_SESSION['success']);

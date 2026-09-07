@@ -29,13 +29,13 @@ if (isset($_POST["login"])){
 
             if ($user && password_verify($password, $user['pass'])) {
                 $_SESSION['success'] = "Login successful.";
-                $_SESSION['form_state'] = 'login';
+                $_SESSION['user'] = true;
+                header("Location: dashboard.php");
             } else {
                 $_SESSION['errors'] = ["Invalid email or password"];
                 $_SESSION['form_state'] = 'login';
+                header("Location: index.php");
             }
-
-            header("Location: index.php");
             exit;
         }
 

@@ -49,8 +49,8 @@ if (isset($_POST["submit"])) {
         mysqli_stmt_bind_param($stmt,"sss", $full_name, $email, $password_hash);
         mysqli_stmt_execute($stmt);
         $_SESSION['success'] = "Registered Successfully.";
-        $_SESSION['form_state'] = 'register';
-        header("Location: index.php");
+        $_SESSION['user'] = true;
+        header("Location: dashboard.php");
         exit;
     } else {
         $_SESSION['errors'] = ["Something went wrong"];
