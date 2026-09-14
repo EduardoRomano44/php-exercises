@@ -2,7 +2,7 @@
 require_once __DIR__ . '/functions.php';
 
 handleAddTaskRequest();
-
+$tasks = getTasks();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,6 +19,17 @@ handleAddTaskRequest();
             <input type="text" name="task" placeholder="Enter new task:" id="">
             <button type="submit" name="add-task">Add Task</button>
         </form>
+        <ul>
+            <?php foreach ($tasks as $task): ?>
+                <li>
+                    <strong><?= htmlspecialchars($task['task'], ENT_QUOTES, 'UTF-8') ?></strong>
+                    <div class="action">
+                        <a href="index.php?complete=<?php echo $task['id']; ?>">Complete</a>
+                        <a href="index.php?delayed=<?php echo $task['id']; ?>">Deplayed</a>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+        </ul>
     </div>
 </body>
 </html>

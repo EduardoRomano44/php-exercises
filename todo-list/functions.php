@@ -8,6 +8,13 @@ function addTask(string $task): ?array {
     return ['ok' => true, 'id' => $pdo->lastInsertId()];
 }
 
+function getTasks(): array {
+    $pdo = getConnection();
+    $stmt = $pdo->prepare("SELECT * FROM task ORDER BY id DESC");
+    $stmt->execute();
+    return $stmt->fetchAll();
+}
+
 function handleAddTaskRequest(): void {
     if (!isset($_POST['add-task'])) {
         return;
