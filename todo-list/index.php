@@ -21,7 +21,7 @@ $tasks = getTasks();
         </form>
         <ul>
             <?php foreach ($tasks as $task): ?>
-                <li class="<?php echo $task['status']; ?>">
+                <li class="<?php echo $task['status']; ?>" draggable="true" data-id="<?php echo $task['id']; ?>">
                     <strong><?= htmlspecialchars($task['task'], ENT_QUOTES, 'UTF-8') ?></strong>
                     <div class="action">
                         <a href="index.php?complete=<?php echo $task['id']; ?>">Complete</a>
@@ -31,5 +31,45 @@ $tasks = getTasks();
             <?php endforeach; ?>
         </ul>
     </div>
+    <script>
+        const taskList = document.querySelector('ul');
+        let draggedTask;
+
+        taskList.addEventListener('dragstart', (event) => {
+            draggedTask = event.target.closest('li');
+            draggedTask.classList.add('dragging');
+        });
+
+        taskList.addEventListener('dragover', (event) => {
+            event.preventDefault();
+            const targetTask = event.target.closest('li');
+
+            if (!targetTask || targetTask === draggedTask) {
+                return;
+            }
+
+            const targetBox = targetTask.getBoundingClientRect();
+            const insertBefore = event.clientY < targetBox.top + targetBox.height / 2;
+            taskList.insertBefore(draggedTask, insertBefore ? targetTask : targetTask.nextSibling);
+        });
+
+        taskList.addEventListener('dragend', async () => {
+            draggedTask.classList.remove('dragging');
+
+            const order = [...taskList.querySelectorAll('li')].map((task) => task.dataset.id);
+            const body = new URLSearchParams({ reorder: '1' });
+            order.forEach((id) => body.append('order[]', id));
+
+            const response = await fetch('index.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body
+            });
+
+            if (!response.ok || !(await response.json()).ok) {
+                window.location.reload();
+            }
+        });
+    </script>
 </body>
 </html>

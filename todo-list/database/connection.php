@@ -16,8 +16,11 @@ function getConnection(): PDO {
         ];
         try {
             $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
+            $pdo->exec("ALTER TABLE task ADD COLUMN position INT NOT NULL DEFAULT 0");
         } catch (PDOException $e) {
-            die(json_encode(['error' => 'Connection Error: ' . $e->getMessage()]));
+            if ((int) ($e->errorInfo[1] ?? 0) !== 1060) {
+                die(json_encode(['error' => 'Connection Error: ' . $e->getMessage()]));
+            }
         }
     }
     return $pdo;

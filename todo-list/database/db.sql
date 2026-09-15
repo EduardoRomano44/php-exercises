@@ -7,5 +7,6 @@ USE todolist;
 CREATE TABLE IF NOT EXISTS task(
     id INT AUTO_INCREMENT PRIMARY KEY,
     task VARCHAR(255),
-    status VARCHAR(128) DEFAULT('Pending')
+    status VARCHAR(128) DEFAULT('Pending'),
+    position INT NOT NULL DEFAULT 0
 );

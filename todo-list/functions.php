@@ -19,13 +19,41 @@ function addTask(string $task): ?array {
 function getTasks(): ?array {
     try {
         $pdo = getConnection();
-        $stmt = $pdo->prepare("SELECT * FROM task ORDER BY id DESC");
+        $stmt = $pdo->prepare("SELECT * FROM task ORDER BY position ASC, id DESC");
         $stmt->execute();
         return $stmt->fetchAll();
     } catch (PDOException $e) {
         return ['ok' => false, 'error' => 'Task fetch failed'];
     }
 
+}
+
+function updateTaskOrder(array $order): array {
+    $pdo = null;
+
+    try {
+        $pdo = getConnection();
+        $pdo->beginTransaction();
+        $stmt = $pdo->prepare("UPDATE task SET position = ? WHERE id = ?");
+
+        foreach ($order as $position => $id) {
+            if (filter_var($id, FILTER_VALIDATE_INT) === false) {
+                $pdo->rollBack();
+                return ['ok' => false, 'error' => 'invalid_order'];
+            }
+
+            $stmt->execute([$position, (int) $id]);
+        }
+
+        $pdo->commit();
+        return ['ok' => true];
+    } catch (PDOException $e) {
+        if ($pdo instanceof PDO && $pdo->inTransaction()) {
+            $pdo->rollBack();
+        }
+
+        return ['ok' => false, 'error' => 'reorder_failed'];
+    }
 }
 
 function deleteTask(int $id): ?array {
@@ -74,7 +102,11 @@ function completeTask(int $id): ?array {
 }
 
 function handleRequest(): void {
-    if (isset($_POST['add-task'])) {
+    if (isset($_POST['reorder'], $_POST['order']) && is_array($_POST['order'])) {
+        header('Content-Type: application/json');
+        echo json_encode(updateTaskOrder($_POST['order']));
+        exit;
+    } else if (isset($_POST['add-task'])) {
         $task = trim($_POST['task'] ?? '');
         
         if ($task !== '') {

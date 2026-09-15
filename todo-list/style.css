@@ -46,6 +46,12 @@ ul li{
     background-color: rgb(164, 220, 222);
     padding: 10px;
     margin-bottom: 10px;
+    cursor: grab;
+}
+
+ul li.dragging{
+    opacity: 0.5;
+    cursor: grabbing;
 }
 
 ul li.Completed{
