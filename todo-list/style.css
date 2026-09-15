@@ -33,3 +33,31 @@ button{
 button:hover{
     background-color: yellowgreen;
 }
+ul{
+    list-style-type: none;
+    padding: 20px 0px;
+    margin: 0px;
+}
+
+ul li{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgb(164, 220, 222);
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+ul li.Completed{
+    text-decoration: line-through;
+    color: gray;
+}
+
+ul li a{
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+ul li a:hover{
+    text-decoration: underline;
+}
